@@ -3,10 +3,9 @@
 import { useState } from "react";
 
 const clientId =
-  "sso_9Kx7Vq2Lm8Rz4Np6Tc1Yw5Hs3Df0Ba";
+  process.env.SSO_TEST_CLIENT_ID ?? "NOT_CONFIGURED";
 
-const redirectUri =
-  "http://localhost:3000/test-client/callback";
+const redirectUri = process.env.SSO_TEST_CLIENT_REDIRECT_URI ?? "http://localhost:3000/test-client/callback";
 
 function base64url(
   buffer: ArrayBuffer
