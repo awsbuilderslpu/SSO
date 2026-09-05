@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const clientId =
-  process.env.SSO_TEST_CLIENT_ID;
+  process.env.NEXT_PUBLIC_SSO_TEST_CLIENT_ID ??
+  "NOT_CONFIGURED";
 
 const clientSecret =
-  process.env.SSO_TEST_CLIENT_SECRET;
+  process.env.SSO_TEST_CLIENT_SECRET ??
+  "NOT_CONFIGURED";
 
 export async function POST(
   request: NextRequest
@@ -51,7 +53,7 @@ export async function POST(
     const tokenResponse =
       await fetch(
         `${
-          process.env.SSO_ISSUER ??
+          process.env.NEXT_PUBLIC_SSO_ISSUER ??
           "http://localhost:3000"
         }/oauth/token`,
         {

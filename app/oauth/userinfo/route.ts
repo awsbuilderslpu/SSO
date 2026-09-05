@@ -48,7 +48,7 @@ export async function GET(
     }
 
     const issuer =
-      process.env.SSO_ISSUER ??
+      process.env.NEXT_PUBLIC_SSO_ISSUER ??
       "http://localhost:3000";
 
     let payload;

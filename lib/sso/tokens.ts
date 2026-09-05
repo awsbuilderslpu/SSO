@@ -15,7 +15,7 @@ const accessTokenKey =
   );
 
 const issuer =
-  process.env.SSO_ISSUER ??
+  process.env.NEXT_PUBLIC_SSO_ISSUER ??
   "http://localhost:3000";
 
 const configuredKeyId =
