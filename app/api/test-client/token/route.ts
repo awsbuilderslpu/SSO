@@ -70,7 +70,7 @@ export async function POST(
                 "authorization_code",
               code,
               redirect_uri:
-                process.env.SSO_TEST_CLIENT_REDIRECT_URI ?? "http://localhost:3000/test-client/callback",
+                process.env.NEXT_PUBLIC_SSO_TEST_CLIENT_REDIRECT_URI ?? "https://sso.awslpu.in/test-client/callback",
               code_verifier:
                 codeVerifier,
             }).toString(),
