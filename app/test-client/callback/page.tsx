@@ -211,24 +211,6 @@ export default function TestClientCallback() {
           );
         }
 
-        setUser({
-          sub:
-            verifiedIdentity.sub,
-          name:
-            verifiedIdentity.name ??
-            userData.name,
-          email:
-            verifiedIdentity.email ??
-            userData.email,
-          picture:
-            verifiedIdentity.picture ??
-            userData.picture,
-        });
-
-        setStatus(
-          "SSO login successful!"
-        );
-
         sessionStorage.removeItem(
           "sso_code_verifier"
         );
@@ -245,6 +227,10 @@ export default function TestClientCallback() {
           {},
           document.title,
           "/test-client/callback"
+        );
+
+        window.location.replace(
+          "/dashboard"
         );
       } catch (err) {
         console.error(
