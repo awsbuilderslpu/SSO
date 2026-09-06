@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
 function Arrow() {
   return (
@@ -73,7 +74,45 @@ function Code() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let profile = null;
+
+  if (user) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("full_name, avatar_url")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    profile = data;
+  }
+
+  const fullName =
+    profile?.full_name ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    "User";
+
+  const avatarUrl =
+    profile?.avatar_url ||
+    user?.user_metadata?.avatar_url ||
+    user?.user_metadata?.picture ||
+    null;
+
+  const initials = fullName
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part: string) => part[0])
+    .join("")
+    .toUpperCase();
+
   return (
     <main className="min-h-screen overflow-hidden bg-[#08090b] text-white">
       <div className="pointer-events-none fixed inset-0">
@@ -105,7 +144,7 @@ export default function Home() {
             </div>
           </Link>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <Link
               href="/docs"
               className="hidden text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-500 transition hover:text-zinc-300 sm:block"
@@ -113,12 +152,41 @@ export default function Home() {
               Docs
             </Link>
 
-            <Link
-              href="/login"
-              className="border border-white/12 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-300 transition hover:border-orange-400/40 hover:text-orange-300"
-            >
-              Sign In
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/5 transition hover:border-orange-400/40"
+                  title={fullName}
+                >
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt={fullName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-[10px] font-semibold text-zinc-300">
+                      {initials}
+                    </span>
+                  )}
+                </Link>
+
+                <Link
+                  href="/dashboard"
+                  className="hidden border border-white/12 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-300 transition hover:border-orange-400/40 hover:text-orange-300 sm:block"
+                >
+                  Dashboard
+                </Link>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="border border-white/12 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-300 transition hover:border-orange-400/40 hover:text-orange-300"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </header>
@@ -150,10 +218,12 @@ export default function Home() {
 
             <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                href="/login"
+                href={user ? "/dashboard" : "/login"}
                 className="flex items-center justify-center gap-3 bg-white px-7 py-4 text-[10px] font-bold uppercase tracking-[0.18em] text-black transition hover:bg-zinc-200"
               >
-                Continue with AWS LPU
+                {user
+                  ? "Go to Dashboard"
+                  : "Continue with AWS LPU"}
 
                 <Arrow />
               </Link>
@@ -228,10 +298,10 @@ export default function Home() {
               </Link>
 
               <Link
-                href="/login"
+                href={user ? "/dashboard" : "/login"}
                 className="text-[9px] uppercase tracking-[0.16em] text-zinc-600 transition hover:text-zinc-400"
               >
-                Account
+                {user ? "Dashboard" : "Account"}
               </Link>
             </div>
           </div>
