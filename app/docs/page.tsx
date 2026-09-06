@@ -15,9 +15,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/docs-og-image.png",
+        url: "https://sso.awslpu.in/docs-og-image.png",
         width: 1200,
         height: 630,
+        type: "image/png",
         alt: "DOCS",
       },
     ],
