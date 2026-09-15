@@ -439,7 +439,7 @@ export default async function DashboardPage({
                 </label>
               </div>
 
-              <div className="border-t border-white/[0.07] pt-6">
+              <div className="border-t border-white/8 pt-6">
                 <button
                   type="submit"
                   className="h-10 bg-white px-6 text-[9px] font-semibold uppercase tracking-[0.15em] text-black transition hover:bg-orange-400"
@@ -451,8 +451,8 @@ export default async function DashboardPage({
           </section>
         </div>
 
-        <section className="mt-5 border border-white/[0.08] bg-[#0c0c0c]">
-          <div className="border-b border-white/[0.08] px-6 py-5">
+        <section className="mt-5 border border-white/8 bg-[#0c0c0c]">
+          <div className="border-b border-white/8 px-6 py-5">
             <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-600">
               Security
             </p>
@@ -474,8 +474,8 @@ export default async function DashboardPage({
               <div
                 className={`border px-4 py-3 text-xs ${
                   passwordMessage.type === "success"
-                    ? "border-emerald-400/20 bg-emerald-400/[0.05] text-emerald-400"
-                    : "border-red-400/20 bg-red-400/[0.05] text-red-400"
+                    ? "border-emerald-400/20 bg-emerald-400/5 text-emerald-400"
+                    : "border-red-400/20 bg-red-400/5 text-red-400"
                 }`}
               >
                 {passwordMessage.text}
@@ -494,7 +494,7 @@ export default async function DashboardPage({
                   autoComplete="new-password"
                   minLength={8}
                   required
-                  className="mt-2 h-11 w-full border border-white/[0.10] bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
+                  className="mt-2 h-11 w-full border border-white/10 bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
                 />
 
                 <span className="mt-2 block text-[10px] text-zinc-700">
@@ -513,12 +513,12 @@ export default async function DashboardPage({
                   autoComplete="new-password"
                   minLength={8}
                   required
-                  className="mt-2 h-11 w-full border border-white/[0.10] bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
+                  className="mt-2 h-11 w-full border border-white/10 bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
                 />
               </label>
             </div>
 
-            <div className="border-t border-white/[0.07] pt-6">
+            <div className="border-t border-white/8 pt-6">
               <button
                 type="submit"
                 className="h-10 bg-white px-6 text-[9px] font-semibold uppercase tracking-[0.15em] text-black transition hover:bg-orange-400"
