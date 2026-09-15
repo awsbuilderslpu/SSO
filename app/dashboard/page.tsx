@@ -63,13 +63,9 @@ async function updatePassword(formData: FormData) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user || !user.email) {
+  if (!user) {
     redirect("/login");
   }
-
-  const currentPassword = String(
-    formData.get("current_password") ?? ""
-  );
 
   const newPassword = String(
     formData.get("new_password") ?? ""
@@ -79,7 +75,7 @@ async function updatePassword(formData: FormData) {
     formData.get("confirm_password") ?? ""
   );
 
-  if (!currentPassword || !newPassword || !confirmPassword) {
+  if (!newPassword || !confirmPassword) {
     redirect("/dashboard?password=missing");
   }
 
@@ -91,26 +87,11 @@ async function updatePassword(formData: FormData) {
     redirect("/dashboard?password=mismatch");
   }
 
-  if (currentPassword === newPassword) {
-    redirect("/dashboard?password=same");
-  }
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
 
-  const { error: signInError } =
-    await supabase.auth.signInWithPassword({
-      email: user.email,
-      password: currentPassword,
-    });
-
-  if (signInError) {
-    redirect("/dashboard?password=incorrect");
-  }
-
-  const { error: updateError } =
-    await supabase.auth.updateUser({
-      password: newPassword,
-    });
-
-  if (updateError) {
+  if (error) {
     redirect("/dashboard?password=failed");
   }
 
@@ -470,8 +451,8 @@ export default async function DashboardPage({
           </section>
         </div>
 
-        <section className="mt-5 border border-white/8 bg-[#0c0c0c]">
-          <div className="border-b border-white/8 px-6 py-5">
+        <section className="mt-5 border border-white/[0.08] bg-[#0c0c0c]">
+          <div className="border-b border-white/[0.08] px-6 py-5">
             <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-zinc-600">
               Security
             </p>
@@ -481,7 +462,7 @@ export default async function DashboardPage({
             </h2>
 
             <p className="mt-1 text-xs text-zinc-600">
-              Change the password used to sign in to your AWS LPU identity.
+              Set a new password for your AWS LPU identity.
             </p>
           </div>
 
@@ -493,29 +474,15 @@ export default async function DashboardPage({
               <div
                 className={`border px-4 py-3 text-xs ${
                   passwordMessage.type === "success"
-                    ? "border-emerald-400/20 bg-emerald-400/5 text-emerald-400"
-                    : "border-red-400/20 bg-red-400/5 text-red-400"
+                    ? "border-emerald-400/20 bg-emerald-400/[0.05] text-emerald-400"
+                    : "border-red-400/20 bg-red-400/[0.05] text-red-400"
                 }`}
               >
                 {passwordMessage.text}
               </div>
             )}
 
-            <div className="grid gap-5 md:grid-cols-3">
-              <label className="block">
-                <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
-                  Current Password
-                </span>
-
-                <input
-                  name="current_password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="mt-2 h-11 w-full border border-white/10 bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
-                />
-              </label>
-
+            <div className="grid gap-5 md:grid-cols-2">
               <label className="block">
                 <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
                   New Password
@@ -527,7 +494,7 @@ export default async function DashboardPage({
                   autoComplete="new-password"
                   minLength={8}
                   required
-                  className="mt-2 h-11 w-full border border-white/10 bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
+                  className="mt-2 h-11 w-full border border-white/[0.10] bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
                 />
 
                 <span className="mt-2 block text-[10px] text-zinc-700">
@@ -546,7 +513,7 @@ export default async function DashboardPage({
                   autoComplete="new-password"
                   minLength={8}
                   required
-                  className="mt-2 h-11 w-full border border-white/10 bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
+                  className="mt-2 h-11 w-full border border-white/[0.10] bg-[#111111] px-3 text-sm text-zinc-200 outline-none transition focus:border-orange-400/50"
                 />
               </label>
             </div>
