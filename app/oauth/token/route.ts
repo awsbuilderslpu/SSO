@@ -535,6 +535,7 @@ export async function POST(
             scopes.includes("profile")
               ? profile.avatar_url
               : null,
+          role: profile.role,
         });
 
       response.id_token =

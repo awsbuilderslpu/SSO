@@ -16,15 +16,12 @@ export async function GET(
 ) {
   try {
     const authorization =
-      request.headers.get(
-        "authorization"
-      );
+      request.headers.get("authorization");
 
     if (!authorization) {
       return NextResponse.json(
         {
-          error:
-            "missing_token",
+          error: "missing_token",
         },
         { status: 401 }
       );
@@ -34,14 +31,12 @@ export async function GET(
       authorization.split(" ");
 
     if (
-      scheme?.toLowerCase() !==
-        "bearer" ||
+      scheme?.toLowerCase() !== "bearer" ||
       !token
     ) {
       return NextResponse.json(
         {
-          error:
-            "invalid_token",
+          error: "invalid_token",
         },
         { status: 401 }
       );
@@ -54,22 +49,20 @@ export async function GET(
     let payload;
 
     try {
-      const result =
-        await jwtVerify(
-          token,
-          secretKey,
-          {
-            algorithms: ["HS256"],
-            issuer,
-          }
-        );
+      const result = await jwtVerify(
+        token,
+        secretKey,
+        {
+          algorithms: ["HS256"],
+          issuer,
+        }
+      );
 
       payload = result.payload;
     } catch {
       return NextResponse.json(
         {
-          error:
-            "invalid_token",
+          error: "invalid_token",
           error_description:
             "The access token is invalid or expired",
         },
@@ -83,17 +76,14 @@ export async function GET(
         : "";
 
     const clientId =
-      typeof payload.client_id ===
-      "string"
+      typeof payload.client_id === "string"
         ? payload.client_id
         : "";
 
     const audience =
       typeof payload.aud === "string"
         ? payload.aud
-        : Array.isArray(
-            payload.aud
-          )
+        : Array.isArray(payload.aud)
           ? payload.aud[0]
           : "";
 
@@ -105,8 +95,7 @@ export async function GET(
     ) {
       return NextResponse.json(
         {
-          error:
-            "invalid_token",
+          error: "invalid_token",
         },
         { status: 401 }
       );
@@ -118,16 +107,14 @@ export async function GET(
     if (!client) {
       return NextResponse.json(
         {
-          error:
-            "invalid_token",
+          error: "invalid_token",
         },
         { status: 401 }
       );
     }
 
     const scope =
-      typeof payload.scope ===
-      "string"
+      typeof payload.scope === "string"
         ? payload.scope
             .split(/\s+/)
             .filter(Boolean)
@@ -142,7 +129,7 @@ export async function GET(
     } = await supabase
       .from("profiles")
       .select(
-        "id, full_name, email, avatar_url"
+        "id, full_name, email, avatar_url, role"
       )
       .eq("id", userId)
       .maybeSingle();
@@ -155,8 +142,7 @@ export async function GET(
 
       return NextResponse.json(
         {
-          error:
-            "server_error",
+          error: "server_error",
         },
         { status: 500 }
       );
@@ -165,8 +151,7 @@ export async function GET(
     if (!profile) {
       return NextResponse.json(
         {
-          error:
-            "invalid_token",
+          error: "invalid_token",
         },
         { status: 401 }
       );
@@ -179,28 +164,25 @@ export async function GET(
       sub: profile.id,
     };
 
-    if (
-      scope.includes("profile")
-    ) {
+    if (scope.includes("profile")) {
       response.name =
         profile.full_name;
       response.picture =
         profile.avatar_url;
     }
 
-    if (
-      scope.includes("email")
-    ) {
+    if (scope.includes("email")) {
       response.email =
         profile.email;
     }
+
+    response.role = profile.role;
 
     return NextResponse.json(
       response,
       {
         headers: {
-          "Cache-Control":
-            "no-store",
+          "Cache-Control": "no-store",
           Pragma: "no-cache",
         },
       }
@@ -213,8 +195,7 @@ export async function GET(
 
     return NextResponse.json(
       {
-        error:
-          "server_error",
+        error: "server_error",
       },
       { status: 500 }
     );

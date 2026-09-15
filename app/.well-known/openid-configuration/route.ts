@@ -44,6 +44,7 @@ export async function GET() {
         "name",
         "email",
         "picture",
+        "role",
         "iss",
         "aud",
         "iat",

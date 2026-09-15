@@ -81,6 +81,7 @@ export async function createIdToken({
   name,
   email,
   picture,
+  role,
 }: {
   userId: string;
   clientId: string;
@@ -88,11 +89,9 @@ export async function createIdToken({
   name?: string | null;
   email?: string | null;
   picture?: string | null;
+  role?: string | null;
 }) {
-  const payload: Record<
-    string,
-    string
-  > = {
+  const payload: Record<string, string> = {
     sub: userId,
   };
 
@@ -106,6 +105,10 @@ export async function createIdToken({
 
   if (picture) {
     payload.picture = picture;
+  }
+
+  if (role) {
+    payload.role = role;
   }
 
   if (nonce) {
@@ -122,7 +125,5 @@ export async function createIdToken({
     .setAudience(clientId)
     .setIssuedAt()
     .setExpirationTime("15m")
-    .sign(
-      await getIdTokenPrivateKey()
-    );
+    .sign(await getIdTokenPrivateKey());
 }
