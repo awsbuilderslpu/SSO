@@ -122,9 +122,9 @@ async function updatePassword(formData: FormData) {
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{
+  searchParams: {
     password?: string;
-  }>;
+  };
 }) {
   const supabase = await createClient();
 
@@ -155,7 +155,7 @@ export default async function DashboardPage({
     );
   }
 
-  const { password } = await searchParams;
+  const { password } = searchParams;
 
   const adminSupabase = createAdminClient();
 
