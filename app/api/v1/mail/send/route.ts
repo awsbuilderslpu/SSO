@@ -11,6 +11,15 @@ const mailtrap = new MailtrapClient({
   token: process.env.MAILTRAP_API_KEY!,
 });
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(request: NextRequest) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -71,13 +80,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (typeof content !== "string") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "content must be a string",
+        },
+        { status: 400 }
+      );
+    }
+
+    const formattedContent = content
+      .split(/\n\s*\n/)
+      .map((paragraph: string) => {
+        const safeParagraph = escapeHtml(paragraph.trim())
+          .replace(/\n/g, "<br />");
+
+        return `<p style="margin: 0 0 18px;">${safeParagraph}</p>`;
+      })
+      .join("");
+
     const email = React.createElement(GeneralEmail, {
       subject,
       greeting,
       heading,
       content: React.createElement("div", {
         dangerouslySetInnerHTML: {
-          __html: content,
+          __html: formattedContent,
         },
       }),
       senderName,
