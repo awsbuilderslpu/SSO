@@ -6,27 +6,9 @@ export async function GET() {
   const startedAt = Date.now();
 
   try {
-    if (!process.env.MAILTRAP_API_KEY) {
-      return NextResponse.json(
-        {
-          success: false,
-          service: "mail",
-          provider: "mailtrap",
-          status: "unconfigured",
-          error: "MAILTRAP_API_KEY is not configured",
-        },
-        { status: 503 }
-      );
-    }
-
     const response = await fetch(
-      "https://send.api.mailtrap.io/api/accounts",
+      "https://status.mailtrap.info/api/v1/status",
       {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.MAILTRAP_API_KEY}`,
-          Accept: "application/json",
-        },
         cache: "no-store",
       }
     );
@@ -39,20 +21,34 @@ export async function GET() {
           success: false,
           service: "mail",
           provider: "mailtrap",
-          status: "degraded",
+          status: "unknown",
           latency,
-          error: "Mailtrap service check failed",
+          error: "Unable to fetch Mailtrap status",
           providerStatus: response.status,
         },
         { status: 503 }
       );
     }
 
+    const data = await response.json();
+
+    const providerState = data?.page?.state;
+
+    const status =
+      providerState === "operational"
+        ? "operational"
+        : providerState === "degraded"
+          ? "degraded"
+          : providerState === "down"
+            ? "down"
+            : "unknown";
+
     return NextResponse.json({
-      success: true,
+      success: status === "operational",
       service: "mail",
       provider: "mailtrap",
-      status: "operational",
+      status,
+      providerStatus: data?.page?.state_text,
       latency,
       timestamp: new Date().toISOString(),
     });
@@ -66,9 +62,9 @@ export async function GET() {
         success: false,
         service: "mail",
         provider: "mailtrap",
-        status: "down",
+        status: "unknown",
         latency,
-        error: "Unable to reach Mailtrap",
+        error: "Unable to reach Mailtrap status service",
         timestamp: new Date().toISOString(),
       },
       { status: 503 }
