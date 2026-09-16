@@ -33,9 +33,10 @@ export default function GeneralEmail({
       <Body
         style={{
           margin: 0,
-          padding: "32px 16px",
-          backgroundColor: "#f5f5f5",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          padding: 0,
+          backgroundColor: "#0b1220",
+          fontFamily:
+            "Arial, Helvetica, sans-serif",
         }}
       >
         <GeneralEmailContent

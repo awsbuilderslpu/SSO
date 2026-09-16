@@ -23,22 +23,22 @@ export default function GeneralEmailContent({
 }: GeneralEmailContentProps) {
   return (
     <Container style={styles.container}>
-
       <Section style={styles.header}>
         <table
           width="100%"
           cellPadding="0"
           cellSpacing="0"
-          style={styles.headerTable}
+          border={0}
+          style={{ borderCollapse: "collapse" }}
         >
           <tbody>
             <tr>
-              <td style={styles.brandCell}>
+              <td style={{ verticalAlign: "middle" }}>
                 <Img
                   src="https://awslpu.in/image/logo/aws_student_builder_group.png"
                   alt="AWS Student Builder Group"
-                  width="64"
-                  height="64"
+                  width="52"
+                  height="52"
                   style={styles.logo}
                 />
 
@@ -56,14 +56,13 @@ export default function GeneralEmailContent({
       </Section>
 
       <Section style={styles.content}>
-        <Text style={styles.greeting}>
-          {greeting}
-        </Text>
+        <Text style={styles.greeting}>{greeting}</Text>
 
         {heading && (
-          <Text style={styles.heading}>
-            {heading}
-          </Text>
+          <>
+            <Text style={styles.heading}>{heading}</Text>
+            <div style={styles.headingLine} />
+          </>
         )}
 
         <Section style={styles.body}>
@@ -71,9 +70,7 @@ export default function GeneralEmailContent({
         </Section>
 
         <Section style={styles.signature}>
-          <Text style={styles.regards}>
-            Regards,
-          </Text>
+          <Text style={styles.regards}>Regards,</Text>
 
           <Text style={styles.senderName}>
             {senderName}
@@ -86,19 +83,58 @@ export default function GeneralEmailContent({
       </Section>
 
       <Section style={styles.ecosystem}>
-        <Text style={styles.ecosystemTitle}>
-          Explore the AWS Community Ecosystem
-        </Text>
+        <table
+          width="100%"
+          cellPadding="0"
+          cellSpacing="0"
+          border={0}
+          style={{ borderCollapse: "collapse" }}
+        >
+          <tbody>
+            <tr>
+              <td style={{ verticalAlign: "top" }}>
+                <Text style={styles.ecosystemEyebrow}>
+                  AWS ECOSYSTEM
+                </Text>
+
+                <Text style={styles.ecosystemTitle}>
+                  Keep building.
+                </Text>
+
+                <Text style={styles.ecosystemDescription}>
+                  Continue learning and building with AWS.
+                </Text>
+              </td>
+
+              <td
+                width="160"
+                style={{
+                  verticalAlign: "top",
+                  textAlign: "right",
+                }}
+              >
+                <div style={styles.ecosystemAccent}>
+                  <span style={styles.accentLarge} />
+                  <span style={styles.accentSmall} />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <table
           width="100%"
           cellPadding="0"
           cellSpacing="0"
-          style={styles.ecosystemTable}
+          border={0}
+          style={{
+            borderCollapse: "collapse",
+            marginTop: "24px",
+          }}
         >
           <tbody>
             <tr>
-              <td style={styles.ecosystemItem}>
+              <td style={styles.linkCell}>
                 <Link
                   href="https://builder.aws"
                   style={styles.ecosystemLink}
@@ -106,12 +142,12 @@ export default function GeneralEmailContent({
                   AWS Builder Center ↗
                 </Link>
 
-                <Text style={styles.ecosystemDescription}>
-                  Learn, build, and grow with AWS.
+                <Text style={styles.linkDescription}>
+                  Build, learn and connect with builders.
                 </Text>
               </td>
-              
-              <td style={styles.ecosystemItem}>
+
+              <td style={styles.linkCell}>
                 <Link
                   href="https://aws.amazon.com/education/awseducate/"
                   style={styles.ecosystemLink}
@@ -119,17 +155,16 @@ export default function GeneralEmailContent({
                   AWS Educate ↗
                 </Link>
 
-                <Text style={styles.ecosystemDescription}>
+                <Text style={styles.linkDescription}>
                   Resources for students and educators.
                 </Text>
               </td>
-
             </tr>
 
             <tr>
               <td
                 style={{
-                  ...styles.ecosystemItem,
+                  ...styles.linkCell,
                   borderBottom: "none",
                 }}
               >
@@ -140,14 +175,14 @@ export default function GeneralEmailContent({
                   AWS Training & Certification ↗
                 </Link>
 
-                <Text style={styles.ecosystemDescription}>
-                  Build in-demand cloud skills.
+                <Text style={styles.linkDescription}>
+                  Develop and validate your AWS skills.
                 </Text>
               </td>
 
               <td
                 style={{
-                  ...styles.ecosystemItem,
+                  ...styles.linkCell,
                   borderBottom: "none",
                 }}
               >
@@ -158,7 +193,7 @@ export default function GeneralEmailContent({
                   AWS LPU ↗
                 </Link>
 
-                <Text style={styles.ecosystemDescription}>
+                <Text style={styles.linkDescription}>
                   Explore the AWS community at LPU.
                 </Text>
               </td>
@@ -172,11 +207,12 @@ export default function GeneralEmailContent({
           width="100%"
           cellPadding="0"
           cellSpacing="0"
-          style={styles.footerTable}
+          border={0}
+          style={{ borderCollapse: "collapse" }}
         >
           <tbody>
             <tr>
-              <td style={styles.footerBrand}>
+              <td style={{ verticalAlign: "top" }}>
                 <Text style={styles.footerName}>
                   AWS Student Builder Group
                 </Text>
@@ -184,50 +220,28 @@ export default function GeneralEmailContent({
                 <Text style={styles.footerUniversity}>
                   Lovely Professional University
                 </Text>
-
-                <Link
-                  href="https://awslpu.in"
-                  style={styles.website}
-                >
-                  awslpu.in
-                </Link>
               </td>
 
-              <td style={styles.footerLinksCell}>
-                <Text style={styles.footerLinks}>
-                  <Link
-                    href="https://builder.aws"
-                    style={styles.footerLink}
-                  >
-                    Builder Center
-                  </Link>
-
-                  <span style={styles.separator}> · </span>
-
-                  <Link
-                    href="https://community.aws"
-                    style={styles.footerLink}
-                  >
-                    Community
-                  </Link>
-
-                  <span style={styles.separator}> · </span>
-
-                  <Link
-                    href="https://events.aws"
-                    style={styles.footerLink}
-                  >
-                    Events
-                  </Link>
-                </Text>
+              <td
+                style={{
+                  verticalAlign: "top",
+                  textAlign: "right",
+                }}
+              >
+                <Link
+                  href="https://awslpu.in"
+                  style={styles.footerLink}
+                >
+                  awslpu.in ↗
+                </Link>
               </td>
             </tr>
           </tbody>
         </table>
 
         <Text style={styles.disclaimer}>
-          This is an automated email from the AWS Student Builder
-          Group. Please do not reply to this email.
+          This is an automated email from the AWS Student
+          Builder Group. Please do not reply to this email.
         </Text>
       </Section>
     </Container>
@@ -239,125 +253,118 @@ const styles = {
     width: "100%",
     maxWidth: "640px",
     margin: "0 auto",
-    backgroundColor: "#111827",
-    color: "#f9fafb",
+    backgroundColor: "#0f1724",
+    color: "#f8fafc",
   },
 
   header: {
-    padding: 0,
-    backgroundColor: "#111827",
-    borderBottom: "1px solid #374151",
-  },
-
-  headerTable: {
-    width: "100%",
-    borderCollapse: "collapse" as const,
-  },
-
-  brandCell: {
-    width: "58%",
-    padding: "34px 32px 30px",
-    verticalAlign: "middle" as const,
+    padding: "34px 40px 30px",
+    backgroundColor: "#0f1724",
+    borderBottom: "1px solid #263244",
   },
 
   logo: {
     display: "block",
-    margin: "0 0 16px",
+    margin: "0 0 13px",
   },
 
   brandName: {
     margin: 0,
-    fontSize: "17px",
+    fontSize: "16px",
     lineHeight: "23px",
     fontWeight: "600",
-    letterSpacing: "-0.2px",
     color: "#ffffff",
   },
 
   brandUniversity: {
-    margin: "5px 0 0",
+    margin: "3px 0 0",
     fontSize: "12px",
     lineHeight: "18px",
-    color: "#9ca3af",
+    color: "#8794a7",
   },
 
-  patternCell: {
-    width: "42%",
-    padding: 0,
-    verticalAlign: "middle" as const,
-  },
-
-  patternTable: {
-    borderCollapse: "collapse" as const,
+  headerMark: {
+    width: "72px",
+    height: "60px",
     marginLeft: "auto",
-    marginRight: "18px",
+    position: "relative" as const,
   },
 
-  gridEmpty: {
-    width: "38px",
-    height: "38px",
-    border: "1px solid #374151",
-    backgroundColor: "#111827",
+  markPurple: {
+    position: "absolute" as const,
+    top: 0,
+    right: "28px",
+    width: "28px",
+    height: "28px",
+    backgroundColor: "#d7a1f9",
+    display: "block",
   },
 
-  gridPurple: {
-    width: "38px",
-    height: "38px",
-    backgroundColor: "#e9a8ff",
+  markCyan: {
+    position: "absolute" as const,
+    top: "28px",
+    right: 0,
+    width: "28px",
+    height: "28px",
+    backgroundColor: "#49ded0",
+    display: "block",
   },
 
-  gridCyan: {
-    width: "38px",
-    height: "38px",
-    backgroundColor: "#42e8d0",
+  markPink: {
+    position: "absolute" as const,
+    top: "28px",
+    right: "28px",
+    width: "28px",
+    height: "28px",
+    backgroundColor: "#e3a3f4",
+    display: "block",
   },
 
-  gridPink: {
-    width: "38px",
-    height: "38px",
-    backgroundColor: "#e7a8ff",
-  },
-
-  gridCyanSoft: {
-    width: "38px",
-    height: "38px",
-    backgroundColor: "#9ee7ed",
-  },
   content: {
-    padding: "42px 40px",
-    backgroundColor: "#111827",
+    padding: "44px 40px 48px",
+    backgroundColor: "#0f1724",
   },
 
   greeting: {
-    margin: "0 0 26px",
+    margin: "0 0 22px",
     fontSize: "15px",
     lineHeight: "24px",
-    color: "#d1d5db",
+    color: "#b8c4d4",
   },
 
   heading: {
-    margin: "0 0 24px",
-    fontSize: "28px",
-    lineHeight: "36px",
+    margin: 0,
+    fontSize: "29px",
+    lineHeight: "37px",
     fontWeight: "600",
+    letterSpacing: "-0.7px",
     color: "#ffffff",
+  },
+
+  headingLine: {
+    width: "42px",
+    height: "3px",
+    margin: "17px 0 27px",
+    backgroundColor: "#55dfd2",
   },
 
   body: {
     fontSize: "15px",
-    lineHeight: "26px",
-    color: "#d1d5db",
+    lineHeight: "27px",
+    color: "#c4cfdd",
   },
 
   signature: {
-    marginTop: "34px",
+    marginTop: "38px",
+    paddingTop: "24px",
+    borderTop: "1px solid #263244",
   },
 
   regards: {
     margin: "0 0 4px",
-    fontSize: "14px",
-    lineHeight: "22px",
-    color: "#9ca3af",
+    fontSize: "13px",
+    lineHeight: "20px",
+    color: "#7f8da0",
   },
 
   senderName: {
@@ -370,34 +377,72 @@ const styles = {
 
   senderRole: {
     margin: "2px 0 0",
-    fontSize: "13px",
-    lineHeight: "20px",
-    color: "#9ca3af",
+    fontSize: "12px",
+    lineHeight: "19px",
+    color: "#7f8da0",
   },
 
   ecosystem: {
-    padding: "30px 40px",
-    backgroundColor: "#0f172a",
-    borderTop: "1px solid #374151",
+    padding: "32px 40px 34px",
+    backgroundColor: "#0b1320",
+    borderTop: "1px solid #263244",
+  },
+
+  ecosystemEyebrow: {
+    margin: 0,
+    fontSize: "10px",
+    lineHeight: "16px",
+    fontWeight: "700",
+    letterSpacing: "1.5px",
+    color: "#55dfd2",
   },
 
   ecosystemTitle: {
-    margin: "0 0 18px",
-    fontSize: "15px",
-    lineHeight: "22px",
+    margin: "5px 0 0",
+    fontSize: "21px",
+    lineHeight: "28px",
     fontWeight: "600",
     color: "#ffffff",
   },
 
-  ecosystemTable: {
-    width: "100%",
-    borderCollapse: "collapse" as const,
+  ecosystemDescription: {
+    margin: "4px 0 0",
+    fontSize: "12px",
+    lineHeight: "19px",
+    color: "#748398",
   },
 
-  ecosystemItem: {
+  ecosystemAccent: {
+    width: "100px",
+    height: "55px",
+    marginLeft: "auto",
+    position: "relative" as const,
+  },
+
+  accentLarge: {
+    position: "absolute" as const,
+    right: "28px",
+    top: 0,
+    width: "45px",
+    height: "45px",
+    backgroundColor: "#d7a1f9",
+    display: "block",
+  },
+
+  accentSmall: {
+    position: "absolute" as const,
+    right: 0,
+    bottom: 0,
+    width: "28px",
+    height: "28px",
+    backgroundColor: "#49ded0",
+    display: "block",
+  },
+
+  linkCell: {
     width: "50%",
-    padding: "14px 18px 14px 0",
-    borderBottom: "1px solid #1f2937",
+    padding: "14px 18px 15px 0",
+    borderBottom: "1px solid #202b3b",
     verticalAlign: "top" as const,
   },
 
@@ -405,30 +450,21 @@ const styles = {
     fontSize: "13px",
     lineHeight: "20px",
     fontWeight: "600",
-    color: "#67e8f9",
+    color: "#65e3d8",
+    textDecoration: "none",
   },
 
-  ecosystemDescription: {
+  linkDescription: {
     margin: "4px 0 0",
     fontSize: "11px",
     lineHeight: "17px",
-    color: "#9ca3af",
+    color: "#728096",
   },
 
   footer: {
-    padding: "28px 40px 30px",
-    backgroundColor: "#0b1120",
-    borderTop: "1px solid #374151",
-  },
-
-  footerTable: {
-    width: "100%",
-    borderCollapse: "collapse" as const,
-  },
-
-  footerBrand: {
-    width: "50%",
-    verticalAlign: "top" as const,
+    padding: "25px 40px 29px",
+    backgroundColor: "#080e18",
+    borderTop: "1px solid #263244",
   },
 
   footerName: {
@@ -436,48 +472,29 @@ const styles = {
     fontSize: "12px",
     lineHeight: "18px",
     fontWeight: "600",
-    color: "#e5e7eb",
+    color: "#d6dee8",
   },
 
   footerUniversity: {
-    margin: "2px 0",
+    margin: "2px 0 0",
     fontSize: "11px",
     lineHeight: "17px",
-    color: "#6b7280",
-  },
-
-  website: {
-    fontSize: "11px",
-    lineHeight: "17px",
-    color: "#67e8f9",
-  },
-
-  footerLinksCell: {
-    width: "50%",
-    textAlign: "right" as const,
-    verticalAlign: "top" as const,
-  },
-
-  footerLinks: {
-    margin: 0,
-    fontSize: "10px",
-    lineHeight: "18px",
+    color: "#667487",
   },
 
   footerLink: {
-    color: "#9ca3af",
-  },
-
-  separator: {
-    color: "#374151",
+    fontSize: "11px",
+    lineHeight: "18px",
+    color: "#86d9d2",
+    textDecoration: "none",
   },
 
   disclaimer: {
-    margin: "24px 0 0",
-    paddingTop: "18px",
-    borderTop: "1px solid #1f2937",
+    margin: "20px 0 0",
+    paddingTop: "14px",
+    borderTop: "1px solid #1b2533",
     fontSize: "10px",
     lineHeight: "16px",
-    color: "#6b7280",
+    color: "#566375",
   },
 };
