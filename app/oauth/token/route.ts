@@ -500,7 +500,7 @@ export async function POST(
       token_type:
         "Bearer",
       expires_in:
-        900,
+        60 * 60 * 24 * 30,
       scope:
         authorizationCode.scope,
     };

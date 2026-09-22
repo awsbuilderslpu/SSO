@@ -70,7 +70,7 @@ export async function createAccessToken({
     .setIssuer(issuer)
     .setAudience(clientId)
     .setIssuedAt()
-    .setExpirationTime("15m")
+    .setExpirationTime("30d")
     .sign(accessTokenKey);
 }
 
@@ -124,6 +124,6 @@ export async function createIdToken({
     .setIssuer(issuer)
     .setAudience(clientId)
     .setIssuedAt()
-    .setExpirationTime("15m")
+    .setExpirationTime("30d")
     .sign(await getIdTokenPrivateKey());
 }
