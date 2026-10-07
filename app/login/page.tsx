@@ -5,9 +5,12 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,20 +27,7 @@ export default function LoginPage() {
       } = await supabase.auth.getUser();
 
       if (user) {
-        const params = new URLSearchParams(window.location.search);
-        const returnTo = params.get("returnTo");
-
-        // If the user came from another application,
-        // continue the original SSO authorization flow.
-        const safeReturnTo =
-          returnTo &&
-          returnTo.startsWith("/") &&
-          !returnTo.startsWith("//") &&
-          !returnTo.startsWith("/\\")
-            ? returnTo
-            : "/dashboard";
-
-        window.location.href = safeReturnTo;
+        router.replace("/dashboard");
         return;
       }
 
@@ -45,7 +35,8 @@ export default function LoginPage() {
     }
 
     void checkAuth();
-  }, []);
+  }, [router]);
+
   async function handleLogin(
     event: FormEvent<HTMLFormElement>
   ) {
@@ -104,10 +95,9 @@ export default function LoginPage() {
     );
 
     if (returnTo) {
-      callbackUrl.searchParams.set(
-        "returnTo",
+      document.cookie = `sso_return_to=${encodeURIComponent(
         returnTo
-      );
+      )}; path=/; max-age=3600; SameSite=Lax`;
     }
 
     const supabase = createClient();
