@@ -10,10 +10,13 @@ function getSafeReturnTo(value: string | null) {
   try {
     const decoded = decodeURIComponent(value);
 
+    // Allow internal paths only. Also guard against external URLs and injections.
     if (
       decoded.startsWith("/") &&
       !decoded.startsWith("//") &&
-      !decoded.startsWith("/\\")
+      !decoded.startsWith("/\\") &&
+      !decoded.includes("://") &&
+      !/[ \t\r\n]/.test(decoded)
     ) {
       return decoded;
     }

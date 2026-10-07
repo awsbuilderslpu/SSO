@@ -95,10 +95,9 @@ export default function LoginPage() {
     );
 
     if (returnTo) {
-      callbackUrl.searchParams.set(
-        "returnTo",
+      document.cookie = `sso_return_to=${encodeURIComponent(
         returnTo
-      );
+      )}; path=/; max-age=3600; SameSite=Lax`;
     }
 
     const supabase = createClient();

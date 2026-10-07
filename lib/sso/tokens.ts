@@ -1,51 +1,33 @@
 import { importPKCS8, SignJWT } from "jose";
 
-const accessTokenSecret =
-  process.env.SSO_JWT_SECRET;
-
-if (!accessTokenSecret) {
-  throw new Error(
-    "SSO_JWT_SECRET is not configured"
-  );
-}
-
-const accessTokenKey =
-  new TextEncoder().encode(
-    accessTokenSecret
-  );
-
 const issuer =
-  process.env.NEXT_PUBLIC_SSO_ISSUER ??
-  "http://localhost:3000";
+  process.env.NEXT_PUBLIC_SSO_ISSUER ?? "http://localhost:3000";
 
-const configuredKeyId =
-  process.env.SSO_JWT_KEY_ID;
-
-const privateKeyValue =
-  process.env.SSO_JWT_PRIVATE_KEY
-    ?.replace(/\\n/g, "\n")
-    .trim();
-
-if (
-  !configuredKeyId ||
-  !privateKeyValue
-) {
-  throw new Error(
-    "SSO_JWT_KEY_ID and SSO_JWT_PRIVATE_KEY are not configured"
-  );
+function getAccessTokenKey(): Uint8Array {
+  const secret = process.env.SSO_JWT_SECRET;
+  if (!secret) {
+    throw new Error("SSO_JWT_SECRET is not configured");
+  }
+  return new TextEncoder().encode(secret);
 }
-
-const keyId: string =
-  configuredKeyId;
-
-const configuredPrivateKey: string =
-  privateKeyValue;
 
 async function getIdTokenPrivateKey() {
-  return importPKCS8(
-    configuredPrivateKey,
-    "RS256"
-  );
+  const keyValue = process.env.SSO_JWT_PRIVATE_KEY?.replace(
+    /\\n/g,
+    "\n"
+  ).trim();
+  if (!keyValue) {
+    throw new Error("SSO_JWT_PRIVATE_KEY is not configured");
+  }
+  return importPKCS8(keyValue, "RS256");
+}
+
+function getKeyId(): string {
+  const kid = process.env.SSO_JWT_KEY_ID;
+  if (!kid) {
+    throw new Error("SSO_JWT_KEY_ID is not configured");
+  }
+  return kid;
 }
 
 export async function createAccessToken({
@@ -71,7 +53,7 @@ export async function createAccessToken({
     .setAudience(clientId)
     .setIssuedAt()
     .setExpirationTime("30d")
-    .sign(accessTokenKey);
+    .sign(getAccessTokenKey());
 }
 
 export async function createIdToken({
@@ -119,7 +101,7 @@ export async function createIdToken({
     .setProtectedHeader({
       alg: "RS256",
       typ: "JWT",
-      kid: keyId,
+      kid: getKeyId(),
     })
     .setIssuer(issuer)
     .setAudience(clientId)

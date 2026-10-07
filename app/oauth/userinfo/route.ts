@@ -3,18 +3,21 @@ import { jwtVerify } from "jose";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getSSOClient } from "@/lib/sso/clients";
 
-const secret = process.env.SSO_JWT_SECRET;
-
-if (!secret) {
-  throw new Error("SSO_JWT_SECRET is not configured");
-}
-
-const secretKey = new TextEncoder().encode(secret);
-
 export async function GET(
   request: NextRequest
 ) {
   try {
+    const secret = process.env.SSO_JWT_SECRET;
+
+    if (!secret) {
+      console.error("SSO_JWT_SECRET is not configured");
+      return NextResponse.json(
+        { error: "server_error" },
+        { status: 500 }
+      );
+    }
+
+    const secretKey = new TextEncoder().encode(secret);
     const authorization =
       request.headers.get("authorization");
 
